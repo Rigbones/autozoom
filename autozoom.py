@@ -27,7 +27,7 @@ def join_meeting(zoom_link: str, meeting_datetime: dt.datetime):
         seconds_left_until_class = (meeting_datetime - now).total_seconds()
         # if class is due to start
         if (seconds_left_until_class < 0):
-            print("Class starting!  Joining zoom...")
+            print("Class started!  Joining zoom...")
             break
         # if class hasn't started yet
         print(f"{seconds_left_until_class} seconds left until class starts.")
