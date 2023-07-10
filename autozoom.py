@@ -36,10 +36,10 @@ def join_meeting(zoom_link: str, meeting_datetime: dt.datetime):
     wb.open(url=zoom_link, new=2)
     time.sleep(5)  # sleep 5 seconds to allow browser to open and load
     # press open meeting
-    pyg.press("left", _pause=1) # left to choose "open zoom meetings", pause 1 second after
-    pyg.press("enter", _pause=6) # enter key to click "open zoom meetings", pause 6 seconds after
+    pyg.press("left", interval=1) # left to choose "open zoom meetings", pause 1 second after
+    pyg.press("enter", interval=6) # enter key to click "open zoom meetings", pause 6 seconds after
     # KU agreements
-    pyg.press("enter", _pause=10) # accept KU agreements, pause 10 seconds after
+    pyg.press("enter", interval=10) # accept zoom KU agreements, pause 10 seconds after
 
 def join_breakout():
     """
@@ -57,7 +57,7 @@ def join_breakout():
             break
         # if still not 09:40 yet
         print("ENTER key pressed at", now)
-        pyg.press("enter", _pause=5)  # pause 5 seconds after each ENTER key press
+        pyg.press("enter", interval=5)  # pause 5 seconds after each ENTER key press
 
 join_meeting(ZOOM_LINK, CLASS_START_DATETIME)
 join_breakout()
