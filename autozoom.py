@@ -1,8 +1,7 @@
-import pyautogui as pyg
-import webbrowser as wb
-import datetime as dt
-import time
-import click
+import pyautogui as pyg  # for key presses
+import webbrowser as wb  # for opening web browser
+import datetime as dt  # for datetime object
+import time  # for time.sleep()
 
 # Today
 TODAY = dt.datetime.today()
@@ -40,11 +39,11 @@ def join_meeting(zoom_link: str, meeting_datetime: dt.datetime):
     pyg.press("left", _pause=1) # left to choose "open zoom meetings", pause 1 second after
     pyg.press("enter", _pause=6) # enter key to click "open zoom meetings", pause 6 seconds after
     # KU agreements
-    pyg.press("enter") # accept KU agreements
+    pyg.press("enter", _pause=10) # accept KU agreements, pause 10 seconds after
 
 def join_breakout():
     """
-    Joins breakout rooms automatically during the class time
+    Joins breakout rooms automatically during the class time, stops when class ends
     Works by spam-clicking the enter key
     """
     # calculate how long each class is in seconds
@@ -58,12 +57,7 @@ def join_breakout():
             break
         # if still not 09:40 yet
         print("ENTER key pressed at", now)
-        pyg.press("enter", _pause=5)  # pause 5 seconds after ENTER key press
+        pyg.press("enter", _pause=5)  # pause 5 seconds after each ENTER key press
 
 join_meeting(ZOOM_LINK, CLASS_START_DATETIME)
 join_breakout()
-
-
-
-
-    
