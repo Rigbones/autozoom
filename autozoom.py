@@ -4,29 +4,15 @@ import datetime as dt
 import time
 import click
 
-# path to google chrome exe file
-# CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-# wb.register('chrome', None,webbrowser.BackgroundBrowser(chrome_path),1)
-# wb.register("chrome", )
-# today
+# Today
 TODAY = dt.datetime.today()
 # ISC 311 zoom link
 ZOOM_LINK = r"https://korea-ac-kr.zoom.us/j/97797472566?pwd=NjI5ZENFV2hDU1BPVWpMd21kNXNzQT09"
-# Meeting datetime
-MEETING_DATETIME = dt.datetime(year=TODAY.year, month=TODAY.month, day=TODAY.day, hour=8, minute=0, second=0)
+# Class start datetime
+CLASS_START_DATETIME = dt.datetime(year=TODAY.year, month=TODAY.month, day=TODAY.day, hour=8, minute=0, second=0)
+# Class end datetime
+CLASS_END_DATETIME = dt.datetime(year=TODAY.year, month=TODAY.month, day=TODAY.day, hour=9, minute=40, second=0)
 
-def format_date(x):
-    date_list = x.split(sep="-")
-    return list(map(int, date_list))
-
-def format_time(x):
-    time_list = x.split(sep="-")
-    return list(map(int, time_list))
-
-def given_datetime(given_date, given_time):
-
-    # YY, MM, DD, HH, MM
-    return dt.datetime(given_date[2], given_date[1], given_date[0], given_time[0], given_time[1], given_time[2])
 
 def join_meeting(zoom_link: str, meeting_datetime: dt.datetime):
     """
@@ -45,24 +31,39 @@ def join_meeting(zoom_link: str, meeting_datetime: dt.datetime):
             break
         # if class hasn't started yet
         print(f"{seconds_left_until_class} seconds left until class starts.")
-        dt.time.sleep(30)  # sleeps for 30 seconds
+        time.sleep(30)  # sleeps for 30 seconds
+
     # join meeting
     wb.open(url=zoom_link, new=2)
-    
+    time.sleep(5)  # sleep 5 seconds to allow browser to open and load
+    # press open meeting
+    pyg.press("left", _pause=1) # left to choose "open zoom meetings", pause 1 second after
+    pyg.press("enter", _pause=6) # enter key to click "open zoom meetings", pause 6 seconds after
+    # KU agreements
+    pyg.press("enter") # accept KU agreements
 
-join_meeting(ZOOM_LINK, MEETING_DATETIME)
+def join_breakout():
+    """
+    Joins breakout rooms automatically during the class time
+    Works by spam-clicking the enter key
+    """
+    # calculate how long each class is in seconds
+    class_duration = (CLASS_END_DATETIME - CLASS_START_DATETIME).total_seconds()
+    while (True):
+        now = dt.datetime.now()
+        seconds_passed_since_class_started = (now - CLASS_START_DATETIME).total_seconds()
+        # if not 09:40 yet
+        if (seconds_passed_since_class_started > class_duration):
+            print("Hooray!  Class has ended.")
+            break
+        # if still not 09:40 yet
+        print("ENTER key pressed at", now)
+        pyg.press("enter", _pause=5)  # pause 5 seconds after ENTER key press
 
-# now = dt.datetime.now()
-# start = dt.datetime(2023, now.month, now.day, 8, 0, 0)
-# time_delta = now - now
+join_meeting(ZOOM_LINK, CLASS_START_DATETIME)
+join_breakout()
 
-# # while not 09:40 yet
-# while (time_delta.total_seconds() < 6000):
-#     # press enter every 5 seconds
-#     pyg.press("enter", presses=1, interval=5)
-#     print("ENTER key pressed at", now)
-#     # calculate new time difference between 08:00 and now
-#     now = dt.datetime.now()
-#     time_delta = now-start
+
+
 
     
