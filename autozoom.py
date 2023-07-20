@@ -53,11 +53,22 @@ def join_breakout():
         seconds_passed_since_class_started = (now - CLASS_START_DATETIME).total_seconds()
         # if not 09:40 yet
         if (seconds_passed_since_class_started > class_duration):
-            print("Hooray!  Class has ended.")
             break
         # if still not 09:40 yet
         print("ENTER key pressed at", now)
         pyg.press("enter", interval=5)  # pause 5 seconds after each ENTER key press
 
-join_meeting(ZOOM_LINK, CLASS_START_DATETIME)
-join_breakout()
+def leave_meeting():
+    """
+    Simple function to leave zoom meeting
+    """
+    print("Quitting zoom meeting...")
+    pyg.keyDown("alt")
+    pyg.press("q")
+    pyg.keyUp("alt")
+    pyg.press("enter")
+
+# join_meeting(ZOOM_LINK, CLASS_START_DATETIME)
+# join_breakout()
+leave_meeting()
+print("Hooray!  Class has ended.")
