@@ -68,7 +68,7 @@ def leave_meeting():
     pyg.keyUp("alt")
     pyg.press("enter")
 
-# join_meeting(ZOOM_LINK, CLASS_START_DATETIME)
-# join_breakout()
+join_meeting(ZOOM_LINK, CLASS_START_DATETIME)
+join_breakout()
 leave_meeting()
 print("Hooray!  Class has ended.")
